@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест медиа</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+        .news-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+        .media-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background: #333;
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .video-thumbnail {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+            display: block;
+            opacity: 0.9;
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .content {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .metadata {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #888;
+        }
+        .category {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            background: #8B5CF6;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тест отображения медиа</h1>
+    
+    <div id="news-container">
+        <!-- Новости будут загружены здесь -->
+    </div>
+
+    <script>
+        async function loadNews() {
+            try {
+                const response = await fetch('http://localhost:8000/api/news/?limit=5');
+                const data = await response.json();
+                
+                const container = document.getElementById('news-container');
+                
+                data.data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'news-card';
+                    
+                    let mediaHtml = '';
+                    if (item.media && item.media.length > 0) {
+                        const media = item.media[0];
+                        
+                        if (media.type === 'photo') {
+                            mediaHtml = `
+                                <div class="media-container">
+                                    <img 
+                                        src="${media.url}" 
+                                        alt="${item.title}"
+                                        class="media-image"
+                                        onerror="this.style.display='none'; console.log('Image failed to load:', '${media.url}')"
+                                        onload="console.log('Image loaded successfully:', '${media.url}')"
+                                    />
+                                </div>
+                            `;
+                        } else if (media.type === 'video') {
+                            mediaHtml = `
+                                <div class="video-container">
+                                    ${media.thumbnail ? 
+                                        `<img src="${media.thumbnail}" alt="Video preview" class="video-thumbnail" />` :
+                                        `<div style="width:100%;height:200px;background:#333;display:flex;align-items:center;justify-content:center;font-size:48px;">🎬</div>`
+                                    }
+                                    <div class="play-button">▶️</div>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    card.innerHTML = `
+                        ${mediaHtml}
+                        <div class="title">${item.title}</div>
+                        <div class="content">${item.content.substring(0, 100)}...</div>
+                        <div class="metadata">
+                            <span class="category">${item.category}</span>
+                            <span>📅 ${new Date(item.publish_date).toLocaleString()}</span>
+                            <span>👁️ ${item.views_count}</span>
+                            <span>📖 ${item.reading_time} мин</span>
+                        </div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error('Error loading news:', error);
+                document.getElementById('news-container').innerHTML = '<p>Ошибка загрузки новостей</p>';
+            }
+        }
+        
+        // Загружаем новости при загрузке страницы
+        loadNews();
+    </script>
+</body>
+</html> 
