@@ -4,11 +4,12 @@ import { fetchNews } from '../api/news';
 
 export const useNews = (category: string = 'all') => {
   const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Изменено на false для lazy loading
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const getNews = useCallback(async (isLoadMore: boolean = false) => {
     try {
@@ -79,11 +80,35 @@ export const useNews = (category: string = 'all') => {
     }
   };
 
+  const initializeNews = useCallback(async () => {
+    if (!initialized) {
+      setLoading(true);
+      setPage(1);
+      setHasMore(true);
+      await getNews();
+      setInitialized(true);
+    }
+  }, [initialized, getNews]);
+
   useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-    getNews();
+    if (category !== 'all') {
+      setPage(1);
+      setHasMore(true);
+      setNews([]);
+      setInitialized(false);
+      getNews();
+    }
   }, [category, getNews]);
+
+  return {
+    news,
+    loading,
+    error,
+    hasMore,
+    loadingMore,
+    loadMore,
+    initializeNews
+  };
 
   return {
     news,

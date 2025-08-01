@@ -105,7 +105,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
 
-  const { news, loading, error, hasMore, loadingMore, loadMore } = useNews(selectedCategory);
+  const { news, loading, error, hasMore, loadingMore, loadMore, initializeNews } = useNews(selectedCategory);
 
   useEffect(() => {
     TelegramWebApp.init();
@@ -186,6 +186,27 @@ const App: React.FC = () => {
           categories={CATEGORIES}
         />
         <LoadingSpinner />
+      </AppContainer>
+    );
+  }
+
+  if (news.length === 0 && !loading) {
+    return (
+      <AppContainer>
+        <Header
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          selectedCategory={selectedCategory}
+          onCategoryChange={handleCategoryChange}
+          categories={CATEGORIES}
+        />
+        <EmptyState>
+          <h3>🎁 Добро пожаловать в Gift Propaganda!</h3>
+          <p>Нажмите кнопку ниже, чтобы загрузить новости</p>
+          <LoadMoreButton onClick={initializeNews}>
+            Загрузить новости
+          </LoadMoreButton>
+        </EmptyState>
       </AppContainer>
     );
   }

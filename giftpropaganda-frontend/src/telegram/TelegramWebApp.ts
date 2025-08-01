@@ -15,9 +15,8 @@ class TelegramWebApp {
       this.webApp.setHeaderColor('#1a1a1a');
       this.webApp.setBackgroundColor('#1a1a1a');
 
-      // Настройка MainButton для Mini App
-      this.webApp.MainButton.setText('Открыть новости');
-      this.webApp.MainButton.show();
+      // MainButton отключен для Mini App
+      this.webApp.MainButton.hide();
 
       // Настройка BackButton
       this.webApp.BackButton.show();

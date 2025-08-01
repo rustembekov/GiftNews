@@ -222,10 +222,16 @@ const InteractionButton = styled.button`
 
 const DescriptionSection = styled.div`
     margin: 24px 0;
-    padding: 20px;
+    padding: 16px;
     background: var(--tg-theme-secondary-bg-color, #1a1a1a);
     border-radius: 12px;
     border: 1px solid var(--tg-theme-hint-color, #333);
+    max-width: 100%;
+    box-sizing: border-box;
+    
+    @media (min-width: 768px) {
+        padding: 20px;
+    }
 `;
 
 const DescriptionTitle = styled.h3`
