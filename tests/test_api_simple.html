@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Простой тест API</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+        .news-item {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+        }
+        .media-info {
+            margin: 10px 0;
+            padding: 10px;
+            background: #2a2a2a;
+            border-radius: 4px;
+        }
+        .status {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .status.success { background: #4ade80; color: #000; }
+        .status.error { background: #ef4444; color: #fff; }
+        .status.warning { background: #f59e0b; color: #000; }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0066aa;
+        }
+        pre {
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Простой тест API</h1>
+    
+    <div>
+        <button onclick="testAPI()">Тест API</button>
+        <button onclick="testWithMedia()">Тест с медиа</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="status warning">🔄 Тестируем API...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/news/?limit=3', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const news = data.data || [];
+                    
+                    let html = `<div class="status success">✅ API работает, получено ${news.length} новостей</div>`;
+                    
+                    for (let i = 0; i < news.length; i++) {
+                        const item = news[i];
+                        html += `
+                            <div class="news-item">
+                                <h3>📰 ${item.title}</h3>
+                                <p><strong>ID:</strong> ${item.id}</p>
+                                <p><strong>Категория:</strong> ${item.category}</p>
+                                <p><strong>Источник:</strong> ${item.author || 'Неизвестно'}</p>
+                                <div class="media-info">
+                                    <p><strong>Медиа:</strong> ${item.media ? item.media.length : 0} элементов</p>
+                                    <pre>${JSON.stringify(item.media, null, 2)}</pre>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<div class="status error">❌ API вернул статус ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">❌ Ошибка: ${error.message}</div>
+                    <p>Проверьте:</p>
+                    <ul>
+                        <li>Сервер запущен на localhost:8000</li>
+                        <li>Нет блокировки CORS</li>
+                        <li>Подключение к интернету</li>
+                    </ul>
+                `;
+            }
+        }
+        
+        async function testWithMedia() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="status warning">🔄 Ищем новости с медиа...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/news/?limit=10', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const news = data.data || [];
+                    
+                    // Ищем новости с медиа
+                    const newsWithMedia = news.filter(item => item.media && item.media.length > 0);
+                    
+                    let html = `<div class="status success">✅ Найдено ${newsWithMedia.length} новостей с медиа из ${news.length}</div>`;
+                    
+                    for (let i = 0; i < Math.min(newsWithMedia.length, 3); i++) {
+                        const item = newsWithMedia[i];
+                        html += `
+                            <div class="news-item">
+                                <h3>📰 ${item.title}</h3>
+                                <p><strong>ID:</strong> ${item.id}</p>
+                                <p><strong>Категория:</strong> ${item.category}</p>
+                                <p><strong>Источник:</strong> ${item.author || 'Неизвестно'}</p>
+                                <div class="media-info">
+                                    <p><strong>Медиа:</strong> ${item.media.length} элементов</p>
+                                    ${item.media.map((media, index) => `
+                                        <div style="margin: 10px 0; padding: 10px; background: #333; border-radius: 4px;">
+                                            <p><strong>Медиа ${index + 1}:</strong></p>
+                                            <p>Тип: ${media.type}</p>
+                                            <p>URL: ${media.url}</p>
+                                            ${media.thumbnail ? `<p>Thumbnail: ${media.thumbnail}</p>` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (newsWithMedia.length === 0) {
+                        html += `<div class="status warning">⚠️ Новостей с медиа не найдено</div>`;
+                    }
+                    
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<div class="status error">❌ API вернул статус ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">❌ Ошибка: ${error.message}</div>
+                `;
+            }
+        }
+        
+        // Автоматически тестируем при загрузке
+        window.onload = function() {
+            setTimeout(testAPI, 1000);
+        };
+    </script>
+</body>
+</html> 

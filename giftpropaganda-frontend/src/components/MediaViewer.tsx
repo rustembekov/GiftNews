@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {MediaItem} from "../api/news";
-
-interface MediaViewerProps {
-  mediaItem: MediaItem;
-  className?: string;
-}
+import { MediaItem } from '../types';
 
 const MediaContainer = styled.div`
   position: relative;
@@ -90,6 +85,11 @@ const ErrorPlaceholder = styled.div`
   font-size: 14px;
   border-radius: 8px;
 `;
+
+interface MediaViewerProps {
+  mediaItem: MediaItem;
+  className?: string;
+}
 
 const MediaViewer: React.FC<MediaViewerProps> = ({
   mediaItem,

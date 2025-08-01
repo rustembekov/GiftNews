@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple API Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+        }
+        .success { border-color: #4ade80; }
+        .error { border-color: #ef4444; }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0066aa;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .result.success { background: #4ade80; color: #000; }
+        .result.error { background: #ef4444; color: #fff; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Простой тест API</h1>
+    
+    <div class="test-section">
+        <h3>📡 Тест API</h3>
+        <button onclick="testAPI()">Тест API</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="result">🔄 Тестируем...</div>';
+            
+            const apis = [
+                'http://localhost:8000/api/news/?limit=1',
+                'https://giftpropaganda.onrender.com/api/news/?limit=1'
+            ];
+            
+            for (const apiUrl of apis) {
+                try {
+                    console.log('Тестируем:', apiUrl);
+                    const startTime = Date.now();
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    const endTime = Date.now();
+                    const responseTime = endTime - startTime;
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        resultDiv.innerHTML = `
+                            <div class="result success">
+                                ✅ API работает: ${apiUrl}<br>
+                                ⏱️ Время: ${responseTime}ms<br>
+                                📊 Новостей: ${data.data?.length || 0}
+                            </div>
+                        `;
+                        return;
+                    } else {
+                        console.log('Ошибка:', response.status, response.statusText);
+                    }
+                } catch (error) {
+                    console.log('Ошибка подключения к', apiUrl, ':', error.message);
+                }
+            }
+            
+            resultDiv.innerHTML = `
+                <div class="result error">
+                    ❌ Ни один API не работает<br>
+                    🔍 Проверьте:<br>
+                    • Локальный сервер запущен на localhost:8000<br>
+                    • Подключение к интернету<br>
+                    • Нет блокировки CORS
+                </div>
+            `;
+        }
+        
+        // Автоматически тестируем при загрузке
+        window.onload = function() {
+            setTimeout(testAPI, 1000);
+        };
+    </script>
+</body>
+</html> 

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест медиа в браузере</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+        .news-item {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+        }
+        .media-container {
+            margin: 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #2a2a2a;
+        }
+        .media-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+        .media-video {
+            width: 100%;
+            max-height: 300px;
+            background: #000;
+        }
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .status {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .status.success { background: #4ade80; color: #000; }
+        .status.error { background: #ef4444; color: #fff; }
+        .status.warning { background: #f59e0b; color: #000; }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0066aa;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Тест медиа в браузере</h1>
+    
+    <div>
+        <button onclick="testAPI()">Тест API с медиа</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<div class="status warning">🔄 Тестируем API...</div>';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/news/?limit=5', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const news = data.data || [];
+                    
+                    let html = `<div class="status success">✅ API работает, получено ${news.length} новостей</div>`;
+                    
+                    for (let i = 0; i < Math.min(news.length, 3); i++) {
+                        const item = news[i];
+                        html += `
+                            <div class="news-item">
+                                <h3>📰 ${item.title}</h3>
+                                <p><strong>ID:</strong> ${item.id}</p>
+                                <p><strong>Категория:</strong> ${item.category}</p>
+                                <p><strong>Источник:</strong> ${item.author || 'Неизвестно'}</p>
+                        `;
+                        
+                        const media = item.media || [];
+                        if (media.length > 0) {
+                            html += `<p><strong>📷 Медиа:</strong> ${media.length} элементов</p>`;
+                            
+                            for (let j = 0; j < media.length; j++) {
+                                const mediaItem = media[j];
+                                html += `
+                                    <div class="media-container">
+                                        <p><strong>Тип:</strong> ${mediaItem.type}</p>
+                                        <p><strong>URL:</strong> ${mediaItem.url}</p>
+                                `;
+                                
+                                if (mediaItem.type === 'photo') {
+                                    html += `
+                                        <img src="${mediaItem.url}" alt="Media" class="media-image" 
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                        <div style="display:none; padding:20px; text-align:center; background:#333;">
+                                            ❌ Изображение не загрузилось
+                                        </div>
+                                    `;
+                                } else if (mediaItem.type === 'video') {
+                                    html += `
+                                        <video controls class="media-video">
+                                            <source src="${mediaItem.url}" type="video/mp4">
+                                            Ваш браузер не поддерживает видео.
+                                        </video>
+                                    `;
+                                }
+                                
+                                html += `</div>`;
+                            }
+                        } else {
+                            html += `<p><strong>❌ Медиа не найдено</strong></p>`;
+                        }
+                        
+                        html += `</div>`;
+                    }
+                    
+                    resultDiv.innerHTML = html;
+                } else {
+                    resultDiv.innerHTML = `<div class="status error">❌ API вернул статус ${response.status}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">❌ Ошибка: ${error.message}</div>
+                    <p>Проверьте:</p>
+                    <ul>
+                        <li>Сервер запущен на localhost:8000</li>
+                        <li>Нет блокировки CORS</li>
+                        <li>Подключение к интернету</li>
+                    </ul>
+                `;
+            }
+        }
+        
+        // Автоматически тестируем при загрузке
+        window.onload = function() {
+            setTimeout(testAPI, 1000);
+        };
+    </script>
+</body>
+</html> 

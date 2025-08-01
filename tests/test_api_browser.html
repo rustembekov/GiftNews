@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Browser Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f0f0f;
+            color: #ffffff;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+        }
+        .success { border-color: #4ade80; }
+        .error { border-color: #ef4444; }
+        .warning { border-color: #f59e0b; }
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0066aa;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        pre {
+            background: #2a2a2a;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .status.success { background: #4ade80; color: #000; }
+        .status.error { background: #ef4444; color: #fff; }
+        .status.warning { background: #f59e0b; color: #000; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Тест API в браузере</h1>
+    
+    <div class="test-section">
+        <h3>📡 Тест локального API</h3>
+        <button onclick="testLocalAPI()">Тест localhost:8000</button>
+        <div id="local-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🚀 Тест продакшн API</h3>
+        <button onclick="testProdAPI()">Тест giftpropaganda.onrender.com</button>
+        <div id="prod-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🪙 Тест категории Crypto</h3>
+        <button onclick="testCryptoAPI()">Тест /api/news/?category=crypto</button>
+        <div id="crypto-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🎁 Тест категории Gifts</h3>
+        <button onclick="testGiftsAPI()">Тест /api/news/?category=gifts</button>
+        <div id="gifts-result"></div>
+    </div>
+
+    <script>
+        const LOCAL_API = 'http://localhost:8000/api/news/';
+        const PROD_API = 'https://giftpropaganda.onrender.com/api/news/';
+        
+        async function testAPI(url, resultId, apiName) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.innerHTML = '<div class="status warning">🔄 Тестируем...</div>';
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
+                
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `
+                        <div class="status success">✅ ${apiName} работает! Время: ${responseTime}ms</div>
+                        <p>📊 Найдено новостей: ${data.data?.length || 0}</p>
+                        <p>📄 Всего страниц: ${data.pages || 0}</p>
+                        <details>
+                            <summary>📋 Первые 2 новости:</summary>
+                            <pre>${JSON.stringify(data.data?.slice(0, 2), null, 2)}</pre>
+                        </details>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="status error">❌ ${apiName} ошибка ${response.status}: ${response.statusText}</div>
+                        <p>⏱️ Время ответа: ${responseTime}ms</p>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="status error">❌ ${apiName} ошибка подключения: ${error.message}</div>
+                    <p>🔍 Проверьте:</p>
+                    <ul>
+                        <li>Сервер запущен на ${url.includes('localhost') ? 'localhost:8000' : 'giftpropaganda.onrender.com'}</li>
+                        <li>Нет блокировки CORS</li>
+                        <li>Подключение к интернету</li>
+                    </ul>
+                `;
+            }
+        }
+        
+        function testLocalAPI() {
+            testAPI(LOCAL_API + '?limit=3', 'local-result', 'Локальный API');
+        }
+        
+        function testProdAPI() {
+            testAPI(PROD_API + '?limit=3', 'prod-result', 'Продакшн API');
+        }
+        
+        function testCryptoAPI() {
+            testAPI(LOCAL_API + '?category=crypto&limit=3', 'crypto-result', 'API Crypto');
+        }
+        
+        function testGiftsAPI() {
+            testAPI(LOCAL_API + '?category=gifts&limit=3', 'gifts-result', 'API Gifts');
+        }
+        
+        // Автоматически тестируем при загрузке
+        window.onload = function() {
+            setTimeout(() => {
+                testLocalAPI();
+                setTimeout(() => testProdAPI(), 1000);
+            }, 1000);
+        };
+    </script>
+</body>
+</html> 

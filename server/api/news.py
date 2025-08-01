@@ -55,19 +55,62 @@ async def get_news(
         news_data = []
         for item in news_items:
             try:
-                # Получаем медиа из JSON поля
+                                # Получаем медиа из JSON поля
                 media_list = []
                 if item.media:
                     try:
-                        # Проверяем, является ли media списком или одним объектом
-                        if isinstance(item.media, list):
-                            media_list = [MediaItem(**media) for media in item.media]
+                        # Добавляем отладочную информацию
+                        logger.info(f"Processing media for item {item.id}: {type(item.media)} - {item.media}")
+                        
+                        # Если media это строка JSON, парсим её
+                        if isinstance(item.media, str):
+                            import json
+                            media_data = json.loads(item.media)
+                        else:
+                            media_data = item.media
+                        
+                        # Проверяем, является ли media_data списком или одним объектом
+                        if isinstance(media_data, list):
+                            media_list = [MediaItem(**media) for media in media_data]
                         else:
                             # Если это один объект, оборачиваем в список
-                            media_list = [MediaItem(**item.media)]
+                            media_list = [MediaItem(**media_data)]
+                            
+                        logger.info(f"Successfully parsed media for {item.id}: {len(media_list)} items")
                     except Exception as e:
                         logger.warning(f"Error parsing media for {item.id}: {e}")
                         logger.warning(f"Media data: {item.media}")
+                        # Пробуем создать медиа из image_url и video_url как fallback
+                        if item.image_url:
+                            media_list = [MediaItem(
+                                type='photo',
+                                url=item.image_url,
+                                thumbnail=item.image_url
+                            )]
+                            logger.info(f"Created fallback photo media for {item.id}")
+                        elif item.video_url:
+                            media_list = [MediaItem(
+                                type='video',
+                                url=item.video_url,
+                                thumbnail=item.image_url
+                            )]
+                            logger.info(f"Created fallback video media for {item.id}")
+                else:
+                    # Если медиа нет, пробуем создать из image_url и video_url
+                    if item.image_url:
+                        media_list = [MediaItem(
+                            type='photo',
+                            url=item.image_url,
+                            thumbnail=item.image_url
+                        )]
+                        logger.info(f"Created photo media from image_url for {item.id}")
+                    elif item.video_url:
+                        media_list = [MediaItem(
+                            type='video',
+                            url=item.video_url,
+                            thumbnail=item.image_url
+                        )]
+                        logger.info(f"Created video media from video_url for {item.id}")
 
                 # Получаем источник
                 source = sources.get(item.source_id)
@@ -125,15 +168,58 @@ async def get_news_item(
         media_list = []
         if news_item.media:
             try:
-                # Проверяем, является ли media списком или одним объектом
-                if isinstance(news_item.media, list):
-                    media_list = [MediaItem(**media) for media in news_item.media]
+                # Добавляем отладочную информацию
+                logger.info(f"Processing media for item {news_item.id}: {type(news_item.media)} - {news_item.media}")
+                
+                # Если media это строка JSON, парсим её
+                if isinstance(news_item.media, str):
+                    import json
+                    media_data = json.loads(news_item.media)
+                else:
+                    media_data = news_item.media
+                
+                # Проверяем, является ли media_data списком или одним объектом
+                if isinstance(media_data, list):
+                    media_list = [MediaItem(**media) for media in media_data]
                 else:
                     # Если это один объект, оборачиваем в список
-                    media_list = [MediaItem(**news_item.media)]
+                    media_list = [MediaItem(**media_data)]
+                    
+                logger.info(f"Successfully parsed media for {news_item.id}: {len(media_list)} items")
             except Exception as e:
                 logger.warning(f"Error parsing media for {news_item.id}: {e}")
                 logger.warning(f"Media data: {news_item.media}")
+                # Пробуем создать медиа из image_url и video_url как fallback
+                if news_item.image_url:
+                    media_list = [MediaItem(
+                        type='photo',
+                        url=news_item.image_url,
+                        thumbnail=news_item.image_url
+                    )]
+                    logger.info(f"Created fallback photo media for {news_item.id}")
+                elif news_item.video_url:
+                    media_list = [MediaItem(
+                        type='video',
+                        url=news_item.video_url,
+                        thumbnail=news_item.image_url
+                    )]
+                    logger.info(f"Created fallback video media for {news_item.id}")
+        else:
+            # Если медиа нет, пробуем создать из image_url и video_url
+            if news_item.image_url:
+                media_list = [MediaItem(
+                    type='photo',
+                    url=news_item.image_url,
+                    thumbnail=news_item.image_url
+                )]
+                logger.info(f"Created photo media from image_url for {news_item.id}")
+            elif news_item.video_url:
+                media_list = [MediaItem(
+                    type='video',
+                    url=news_item.video_url,
+                    thumbnail=news_item.image_url
+                )]
+                logger.info(f"Created video media from video_url for {news_item.id}")
 
         # Увеличиваем счетчик просмотров
         if news_item.views_count is None:

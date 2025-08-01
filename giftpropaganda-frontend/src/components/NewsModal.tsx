@@ -1,33 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MediaViewer from './MediaViewer';
 import TelegramWebApp from '../telegram/TelegramWebApp';
-import DOMPurify from 'dompurify'; // Добавлен для безопасного отображения HTML
-import {MediaItem, NewsItem as ApiNewsItem} from '../api/news';
-
-// Расширяем импортированный интерфейс
-interface NewsItem extends ApiNewsItem {
-    media?: MediaItem[];
-    content_html: string;
-    source_name?: string;
-    source_url?: string;
-    subtitle?: string;
-}
-
-// interface NewsItem {
-//   id: number;
-//   title: string;
-//   content: string;
-//   link: string;
-//   publish_date: string;
-//   category: string;
-//   image_url?: string;
-//   video_url?: string;
-//   reading_time?: number;
-//   views_count?: number;
-//   author?: string;
-//   subtitle?: string;
-// }
+import DOMPurify from 'dompurify';
+import { NewsItem } from '../types';
+import { formatTimeAgo } from '../utils/formatters';
 
 interface NewsModalProps {
     news: NewsItem;
@@ -237,49 +214,89 @@ const InteractionButton = styled.button`
 `;
 
 const ReadOriginalButton = styled.a`
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 20px;
     background: var(--tg-theme-button-color, #0088cc);
     color: var(--tg-theme-button-text-color, #ffffff);
     text-decoration: none;
-    border-radius: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
     font-weight: 500;
-    transition: background 0.2s ease;
+    transition: opacity 0.2s ease;
 
     &:hover {
-        background: #0077b3;
+        opacity: 0.8;
     }
 `;
 
-const formatTimeAgo = (dateString: string): string => {
-    const now = new Date();
-    const date = new Date(dateString);
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+const DescriptionSection = styled.div`
+    margin: 24px 0;
+    padding: 20px;
+    background: var(--tg-theme-secondary-bg-color, #1a1a1a);
+    border-radius: 12px;
+    border: 1px solid var(--tg-theme-hint-color, #333);
+`;
 
-    if (diffInSeconds < 60) return 'только что';
-    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} мин назад`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} ч назад`;
-    return `${Math.floor(diffInSeconds / 86400)} дн назад`;
-};
+const DescriptionTitle = styled.h3`
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: var(--tg-theme-text-color, #ffffff);
+`;
+
+const LinksContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+`;
+
+const LinkItem = styled.a`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--tg-theme-button-color, #0088cc);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 12px;
+    background: rgba(0, 136, 204, 0.1);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(0, 136, 204, 0.2);
+        transform: translateY(-1px);
+    }
+`;
+
+const LinkIcon = styled.span`
+    font-size: 16px;
+`;
+
+const LinkText = styled.span`
+    flex: 1;
+`;
+
+const HighlightText = styled.span`
+    color: #ff6b6b;
+    font-weight: 600;
+`;
+
+const ImportantNotice = styled.div`
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--tg-theme-text-color, #ffffff);
+`;
 
 const SourceInfo = styled.div`
   margin-top: 20px;
   font-size: 14px;
   color: var(--tg-theme-hint-color, #888);
 `;
-
-const SourceLink = styled.a`
-  color: var(--tg-theme-link-color, #0088cc);
-  margin-left: 5px;
-`;
-
-interface NewsModalProps {
-    news: NewsItem;
-    isOpen: boolean;
-    onClose: () => void;
-}
 
 const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
     useEffect(() => {
@@ -329,8 +346,6 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
 
     const handleInteraction = (type: string) => {
         TelegramWebApp.triggerHapticFeedback('impact');
-        // Здесь можно добавить логику для лайков, закладок и т.д.
-        console.log(`Interaction: ${type}`);
     };
 
     const createMarkup = (html: string) => {
@@ -384,16 +399,39 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
                             <p>{news.content}</p>
                         </ArticleContent>
                     )}
-                    {news.source_name && (
+
+                    {/* Описание с ссылками */}
+                    <DescriptionSection>
+                        <DescriptionTitle>📋 Полезные ссылки</DescriptionTitle>
+                        
+                        <LinksContainer>
+                            <LinkItem href="https://t.me/source" target="_blank" rel="noopener noreferrer">
+                                <LinkIcon>💡</LinkIcon>
+                                <LinkText>Источник</LinkText>
+                            </LinkItem>
+                            
+                            <LinkItem href="https://t.me/nft_chat" target="_blank" rel="noopener noreferrer">
+                                <LinkIcon>🚀</LinkIcon>
+                                <LinkText>Чат для покупки/продажи NFT</LinkText>
+                            </LinkItem>
+                            
+                            <LinkItem href="https://t.me/portals" target="_blank" rel="noopener noreferrer">
+                                <LinkIcon>❤️</LinkIcon>
+                                <LinkText>Portals ❤️</LinkText>
+                            </LinkItem>
+                        </LinksContainer>
+
+                        <ImportantNotice>
+                            <HighlightText>‼️ На Portals теперь доступны розыгрыши!</HighlightText>
+                            <br />
+                            Запустить розыгрыш вы можете перейдя во вкладку профиль, а потом giveaways.
+                        </ImportantNotice>
+                    </DescriptionSection>
+
+                    {news.source?.name && (
                         <SourceInfo>
                             Источник:{" "}
-                            {news.source_url ? (
-                                <SourceLink href={news.source_url} target="_blank" rel="noopener noreferrer">
-                                    {news.source_name}
-                                </SourceLink>
-                            ) : (
-                                <span>{news.source_name}</span>
-                            )}
+                            {news.source?.name}
                         </SourceInfo>
                     )}
 

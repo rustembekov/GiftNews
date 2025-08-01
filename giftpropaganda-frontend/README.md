@@ -1,46 +1,226 @@
-# Getting Started with Create React App
+# 🎁 GiftNews - Telegram Mini App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Telegram Mini App для новостей о подарках, криптовалютах и NFT с динамическими стилями и красивым дизайном.
 
-## Available Scripts
+## 🚀 Деплой на GitHub Pages
 
-In the project directory, you can run:
+### 📍 Ссылка на приложение:
+```
+https://rustembekov.github.io/GiftNews
+```
 
-### `npm start`
+### 📱 Telegram Mini App:
+```
+https://t.me/GiftPropagandaBot/giftnews
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 🎯 Особенности
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### ✨ Динамические стили
+- Каждая новость имеет свой уникальный фон и иконку
+- Поддержка градиентов, изображений и цветов из API
+- Адаптивные цвета текста для лучшей читаемости
+- Fallback система для отсутствующих данных
 
-### `npm test`
+### 📱 Telegram Web App интеграция
+- Полная поддержка Telegram Mini App API
+- Haptic feedback (вибрация)
+- Адаптация под тему Telegram
+- Нативные попапы и алерты
+- Поддержка всех платформ (iOS, Android, Desktop)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🎨 Современный дизайн
+- Стеклянные эффекты (backdrop-filter)
+- Плавные анимации и переходы
+- Responsive дизайн
+- Оптимизация для мобильных устройств
 
-### `npm run build`
+## 🛠 Технологии
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Frontend**: React 19, TypeScript, Styled Components
+- **API**: Axios с кэшированием и retry логикой
+- **Telegram**: Web App API
+- **Деплой**: GitHub Pages
+- **Сборка**: Create React App
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📁 Структура проекта
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+src/
+├── components/          # React компоненты
+│   ├── Header.tsx      # Заголовок с поиском и категориями
+│   ├── NewsCard.tsx    # Карточка новости с динамическими стилями
+│   ├── FeaturedNewsCard.tsx # Премиум карточка для первых новостей
+│   ├── NewsModal.tsx   # Модальное окно с полным описанием
+│   ├── MediaViewer.tsx # Просмотр медиа файлов
+│   └── SearchBar.tsx   # Поиск по новостям
+├── hooks/              # Custom hooks
+│   └── useNews.ts      # Логика загрузки новостей
+├── api/                # API интеграция
+│   └── news.ts         # API клиент с кэшированием
+├── types/              # TypeScript типы
+│   └── index.ts        # Интерфейсы для данных
+├── utils/              # Утилиты
+│   ├── formatters.ts   # Форматирование дат и текста
+│   ├── newsStyles.ts   # Логика динамических стилей
+│   └── testData.ts     # Тестовые данные
+├── constants/          # Константы
+│   └── index.ts        # Категории и настройки
+└── telegram/           # Telegram Web App интеграция
+    ├── TelegramWebApp.ts # Основной класс интеграции
+    └── telegram-webapp.d.ts # TypeScript типы
+```
 
-### `npm run eject`
+## 🚀 Быстрый старт
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 1. Клонирование репозитория
+```bash
+git clone https://github.com/rustembekov/GiftNews.git
+cd GiftNews
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2. Установка зависимостей
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 3. Запуск в режиме разработки
+```bash
+npm start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 4. Сборка для продакшена
+```bash
+npm run build
+```
 
-## Learn More
+### 5. Деплой на GitHub Pages
+```bash
+npm run deploy
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 📱 Настройка Telegram Mini App
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 1. Создание бота
+1. Напишите [@BotFather](https://t.me/BotFather)
+2. Отправьте `/newbot`
+3. Название: `GiftNews`
+4. Username: `giftnews_bot`
+
+### 2. Создание Mini App
+1. Отправьте `/newapp`
+2. Выберите вашего бота
+3. Название: `GiftNews`
+4. Описание: `Новости о подарках, криптовалютах и NFT`
+
+### 3. Получение ссылки
+После настройки получите ссылку:
+```
+https://t.me/giftnews_bot/giftnews
+```
+
+## 🎨 Динамические стили
+
+### Поддерживаемые типы фонов:
+- **background_image** - изображение с градиентным наложением
+- **background_color** - сплошной цвет
+- **gradient_start/end** - градиентный фон
+- **Fallback** - градиенты по категориям
+
+### Иконки:
+- **API иконка** - из данных новости
+- **Категорийная иконка** - по умолчанию
+- **Fallback иконка** - 📰
+
+### Категории:
+- 🎁 **gifts** - подарки
+- ₿ **crypto** - криптовалюты
+- 💻 **tech** - технологии
+- 👥 **community** - сообщество
+- 🖼️ **nft** - NFT
+
+## 🔧 API интеграция
+
+### Endpoints:
+- `GET /api/news/` - список новостей
+- `GET /api/news/{id}` - детали новости
+- `GET /api/categories/` - категории
+
+### Особенности:
+- Автоматическое кэширование (5 минут)
+- Retry логика (3 попытки)
+- Fallback на тестовые данные
+- Подробное логирование запросов
+
+## 📊 Логирование
+
+Приложение ведет подробные логи:
+- API запросы и ответы
+- Telegram Web App инициализация
+- Пользовательские действия
+- Ошибки и предупреждения
+
+## 🎯 Функции
+
+### Основные:
+- ✅ Просмотр новостей по категориям
+- ✅ Поиск по заголовкам и содержанию
+- ✅ Динамические стили для каждой новости
+- ✅ Модальные окна с полным описанием
+- ✅ Просмотр медиа файлов
+- ✅ Пагинация (загрузка дополнительных новостей)
+
+### Telegram интеграция:
+- ✅ Haptic feedback
+- ✅ Нативные попапы
+- ✅ Адаптация под тему
+- ✅ Открытие ссылок в Telegram
+- ✅ Получение данных пользователя
+
+## 🚀 Деплой
+
+### GitHub Pages:
+```bash
+npm run deploy
+```
+
+### Vercel (рекомендуется):
+```bash
+npm install -g vercel
+vercel
+```
+
+### Netlify:
+1. Подключите GitHub репозиторий
+2. Build command: `npm run build`
+3. Publish directory: `build`
+
+## 📈 Производительность
+
+- **Размер сборки**: ~100KB (gzipped)
+- **Время загрузки**: <2 секунды
+- **Кэширование**: 5 минут
+- **Retry**: 3 попытки
+- **Timeout**: 10 секунд
+
+## 🔗 Полезные ссылки
+
+- [Telegram Mini Apps](https://core.telegram.org/bots/webapps)
+- [GitHub Pages](https://pages.github.com/)
+- [Vercel](https://vercel.com/)
+- [Netlify](https://netlify.com/)
+
+## 📄 Лицензия
+
+MIT License
+
+## 🤝 Поддержка
+
+Если у вас есть вопросы или предложения:
+1. Создайте Issue в репозитории
+2. Проверьте логи в консоли браузера
+3. Убедитесь, что backend сервер запущен
+
+---
+
+**GiftNews** - современный Telegram Mini App для новостей! 🎉
