@@ -109,13 +109,4 @@ export const useNews = (category: string = 'all') => {
     loadMore,
     initializeNews
   };
-
-  return {
-    news,
-    loading,
-    error,
-    hasMore,
-    loadingMore,
-    loadMore
-  };
 }; 
