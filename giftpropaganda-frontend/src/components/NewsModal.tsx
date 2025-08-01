@@ -88,10 +88,15 @@ const ShareButton = styled.button`
 
 const ModalContent = styled.div`
     flex: 1;
-    padding: 0 16px 40px 16px;
-    max-width: 800px;
+    padding: 0 12px 40px 12px;
+    max-width: 100%;
     margin: 0 auto;
     width: 100%;
+    
+    @media (min-width: 768px) {
+        padding: 0 16px 40px 16px;
+        max-width: 800px;
+    }
 `;
 
 const ArticleHeader = styled.div`
@@ -447,14 +452,6 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
                                 🔖 3
                             </InteractionButton>
                         </InteractionButtons>
-
-                        <ReadOriginalButton
-                            href={news.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Читать оригинал 🔗
-                        </ReadOriginalButton>
                     </InteractionBar>
                 </ModalContent>
             </ModalContainer>

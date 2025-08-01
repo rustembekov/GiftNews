@@ -11,8 +11,12 @@ const HeaderContainer = styled.header`
   z-index: 100;
   background: var(--tg-theme-bg-color, #0f0f0f);
   border-bottom: 1px solid var(--tg-theme-hint-color, #333);
-  padding: 12px 16px;
+  padding: 10px 12px;
   backdrop-filter: blur(10px);
+  
+  @media (min-width: 768px) {
+    padding: 12px 16px;
+  }
 `;
 
 const HeaderTop = styled.div`
@@ -24,21 +28,30 @@ const HeaderTop = styled.div`
 
 const Title = styled.h1`
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--tg-theme-text-color, #ffffff);
   display: flex;
   align-items: center;
   gap: 8px;
+  
+  @media (min-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const StatsBar = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 12px;
   color: var(--tg-theme-hint-color, #999);
   flex-wrap: wrap;
+  
+  @media (min-width: 768px) {
+    gap: 16px;
+    font-size: 14px;
+  }
 `;
 
 const StatItem = styled.span<{ $color?: string }>`
