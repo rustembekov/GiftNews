@@ -226,8 +226,11 @@ const DescriptionSection = styled.div`
     background: var(--tg-theme-secondary-bg-color, #1a1a1a);
     border-radius: 12px;
     border: 1px solid var(--tg-theme-hint-color, #333);
+    width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
+    word-wrap: break-word;
     
     @media (min-width: 768px) {
         padding: 20px;
@@ -245,6 +248,8 @@ const LinksContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 100%;
+    max-width: 100%;
 `;
 
 const LinkItem = styled.a`
@@ -259,6 +264,11 @@ const LinkItem = styled.a`
     background: rgba(0, 136, 204, 0.1);
     border-radius: 8px;
     transition: all 0.2s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    word-wrap: break-word;
 
     &:hover {
         background: rgba(0, 136, 204, 0.2);
@@ -272,6 +282,10 @@ const LinkIcon = styled.span`
 
 const LinkText = styled.span`
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 const HighlightText = styled.span`
@@ -288,6 +302,11 @@ const ImportantNotice = styled.div`
     font-size: 14px;
     line-height: 1.5;
     color: var(--tg-theme-text-color, #ffffff);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    word-wrap: break-word;
 `;
 
 const SourceInfo = styled.div`
