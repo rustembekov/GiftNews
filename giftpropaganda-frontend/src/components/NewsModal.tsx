@@ -218,20 +218,7 @@ const InteractionButton = styled.button`
     }
 `;
 
-const ReadOriginalButton = styled.a`
-    background: var(--tg-theme-button-color, #0088cc);
-    color: var(--tg-theme-button-text-color, #ffffff);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: opacity 0.2s ease;
 
-    &:hover {
-        opacity: 0.8;
-    }
-`;
 
 const DescriptionSection = styled.div`
     margin: 24px 0;
