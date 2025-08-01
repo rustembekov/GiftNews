@@ -1,133 +1,46 @@
-# Gift Propaganda Mini App
+# Getting Started with Create React App
 
-Telegram Mini App для новостей о подарках, криптовалютах и NFT.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 🚀 Деплой на GitHub Pages
+## Available Scripts
 
-### 1. Подготовка репозитория
+In the project directory, you can run:
 
-1. Создайте новый репозиторий на GitHub:
-   ```
-   https://github.com/your-username/giftpropaganda-mini-app
-   ```
+### `npm start`
 
-2. Обновите `homepage` в `package.json`:
-   ```json
-   "homepage": "https://your-username.github.io/giftpropaganda-mini-app"
-   ```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### 2. Установка зависимостей
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-```bash
-npm install
-npm install --save-dev gh-pages
-```
+### `npm test`
 
-### 3. Деплой
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-```bash
-# Сборка и деплой
-npm run deploy
-```
+### `npm run build`
 
-### 4. Настройка GitHub Pages
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-1. Перейдите в Settings репозитория
-2. В разделе "Pages" выберите:
-   - Source: "Deploy from a branch"
-   - Branch: "gh-pages"
-   - Folder: "/ (root)"
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### 5. Получение ссылки
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-После деплоя ваше приложение будет доступно по адресу:
-```
-https://your-username.github.io/giftpropaganda-mini-app
-```
+### `npm run eject`
 
-## 🔧 Альтернативные варианты деплоя
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-### Vercel (Рекомендуется)
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-1. Установите Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-2. Деплой:
-   ```bash
-   vercel
-   ```
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-### Netlify
+## Learn More
 
-1. Создайте аккаунт на Netlify
-2. Подключите GitHub репозиторий
-3. Настройте:
-   - Build command: `npm run build`
-   - Publish directory: `build`
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-## 📱 Настройка Telegram Bot
-
-### 1. Создание бота
-
-1. Напишите @BotFather в Telegram
-2. Создайте нового бота: `/newbot`
-3. Получите токен бота
-
-### 2. Настройка Mini App
-
-1. Отправьте @BotFather команду `/newapp`
-2. Выберите вашего бота
-3. Укажите название Mini App
-4. Добавьте ссылку на деплой:
-   ```
-   https://your-username.github.io/giftpropaganda-mini-app
-   ```
-
-### 3. Получение ссылки Mini App
-
-После настройки вы получите ссылку вида:
-```
-https://t.me/your_bot_name/giftpropaganda
-```
-
-## 🔗 Полезные ссылки
-
-- [Telegram Mini Apps Documentation](https://core.telegram.org/bots/webapps)
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://netlify.com/)
-
-## 📝 Структура проекта
-
-```
-src/
-├── components/          # React компоненты
-├── hooks/              # Custom hooks
-├── api/                # API интеграция
-├── types/              # TypeScript типы
-├── utils/              # Утилиты
-├── constants/          # Константы
-└── telegram/           # Telegram Web App интеграция
-```
-
-## 🛠 Разработка
-
-```bash
-# Установка зависимостей
-npm install
-
-# Запуск в режиме разработки
-npm start
-
-# Сборка для продакшена
-npm run build
-
-# Деплой
-npm run deploy
-```
-
-## 📄 Лицензия
-
-MIT License
+To learn React, check out the [React documentation](https://reactjs.org/).
