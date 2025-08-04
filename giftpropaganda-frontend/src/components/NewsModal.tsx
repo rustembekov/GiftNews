@@ -147,16 +147,47 @@ const MetaItem = styled.span`
 
 const ArticleContent = styled.div`
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.7;
     color: var(--tg-theme-text-color, #ffffff);
+    margin: 24px 0;
+    padding: 20px;
+    background: var(--tg-theme-secondary-bg-color, #1a1a1a);
+    border-radius: 12px;
+    border: 1px solid var(--tg-theme-hint-color, #333);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    word-wrap: break-word;
 
     p {
         margin: 0 0 16px 0;
+        text-align: justify;
+        hyphens: auto;
+    }
+
+    p:last-child {
+        margin-bottom: 0;
     }
 
     h2, h3, h4 {
         margin: 24px 0 12px 0;
         color: var(--tg-theme-text-color, #ffffff);
+        font-weight: 600;
+    }
+
+    h2 {
+        font-size: 20px;
+        border-bottom: 2px solid var(--tg-theme-button-color, #0088cc);
+        padding-bottom: 8px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    h4 {
+        font-size: 16px;
     }
 
     ul, ol {
@@ -164,20 +195,95 @@ const ArticleContent = styled.div`
         padding-left: 20px;
     }
 
+    li {
+        margin-bottom: 8px;
+    }
+
     blockquote {
         margin: 16px 0;
-        padding: 12px 16px;
-        background: var(--tg-theme-secondary-bg-color, #1a1a1a);
+        padding: 16px 20px;
+        background: rgba(0, 136, 204, 0.1);
         border-left: 4px solid var(--tg-theme-button-color, #0088cc);
-        border-radius: 0 4px 4px 0;
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
     }
 
     code {
         background: var(--tg-theme-secondary-bg-color, #1a1a1a);
-        padding: 2px 4px;
-        border-radius: 4px;
+        padding: 4px 8px;
+        border-radius: 6px;
         font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
         font-size: 14px;
+        border: 1px solid var(--tg-theme-hint-color, #333);
+    }
+
+    pre {
+        background: var(--tg-theme-secondary-bg-color, #1a1a1a);
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--tg-theme-hint-color, #333);
+        margin: 16px 0;
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+    }
+
+    strong, b {
+        font-weight: 600;
+        color: var(--tg-theme-button-color, #0088cc);
+    }
+
+    em, i {
+        font-style: italic;
+        color: var(--tg-theme-hint-color, #999);
+    }
+
+    a {
+        color: var(--tg-theme-button-color, #0088cc);
+        text-decoration: none;
+        border-bottom: 1px solid var(--tg-theme-button-color, #0088cc);
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 16px 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        background: var(--tg-theme-secondary-bg-color, #1a1a1a);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--tg-theme-hint-color, #333);
+    }
+
+    th {
+        background: var(--tg-theme-button-color, #0088cc);
+        color: var(--tg-theme-button-text-color, #ffffff);
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+        padding: 16px;
+        margin: 16px 0;
     }
 `;
 
@@ -368,8 +474,13 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
     const createMarkup = (html: string) => {
         return {
             __html: DOMPurify.sanitize(html, {
-                ADD_TAGS: ['iframe'],
-                ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+                ALLOWED_TAGS: [
+                    'p', 'br', 'strong', 'b', 'em', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                    'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'a', 'img', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+                    'div', 'span', 'mark', 'del', 'ins', 'sub', 'sup'
+                ],
+                ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel', 'class', 'id', 'style'],
+                ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
             })
         };
     };
@@ -413,7 +524,16 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
                     )}
                     {!news.content_html && news.content && (
                         <ArticleContent>
-                            <p>{news.content}</p>
+                            {news.content.split('\n\n').map((paragraph, index) => (
+                                <p key={index}>{paragraph.trim()}</p>
+                            ))}
+                        </ArticleContent>
+                    )}
+                    {!news.content_html && !news.content && (
+                        <ArticleContent>
+                            <p style={{ textAlign: 'center', color: 'var(--tg-theme-hint-color, #999)' }}>
+                                📄 Контент статьи загружается...
+                            </p>
                         </ArticleContent>
                     )}
 
