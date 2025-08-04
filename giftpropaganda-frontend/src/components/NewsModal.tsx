@@ -480,7 +480,7 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
                     'div', 'span', 'mark', 'del', 'ins', 'sub', 'sup'
                 ],
                 ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel', 'class', 'id', 'style'],
-                ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+                ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i
             })
         };
     };
