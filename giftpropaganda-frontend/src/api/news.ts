@@ -50,7 +50,7 @@ const checkAPIHealth = async (url: string): Promise<boolean> => {
       }
     });
     return response.status === 200;
-  } catch (error) {
+  } catch (error: any) {
     return false;
   }
 };
@@ -83,7 +83,17 @@ const initializeAPI = async () => {
       currentAPI = API_CONFIG.LOCAL;
     }
   } else {
-    currentAPI = 'fallback';
+    try {
+      const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
+      apiHealth.prod = prodHealth;
+      if (prodHealth) {
+        currentAPI = API_CONFIG.PROD;
+      } else {
+        currentAPI = 'fallback';
+      }
+    } catch (error: any) {
+      currentAPI = 'fallback';
+    }
   }
 };
 
@@ -123,53 +133,6 @@ export const fetchNews = async (
   limit: number = 20,
   useCache: boolean = true
 ): Promise<NewsResponse> => {
-  if (currentAPI === 'fallback') {
-    const fallbackData: NewsResponse = {
-      data: [
-        {
-          id: 1,
-          title: "🎁 Добро пожаловать в GiftNews!",
-          content: "Здесь вы найдете самые свежие новости о подарках, криптовалютах и технологиях. Приложение работает в режиме демонстрации.",
-          content_html: "<p>Здесь вы найдете самые свежие новости о подарках, криптовалютах и технологиях. Приложение работает в режиме демонстрации.</p>",
-          link: "#",
-          publish_date: new Date().toISOString(),
-          category: "gifts",
-          media: []
-        },
-        {
-          id: 2,
-          title: "📱 Telegram Mini App",
-          content: "Это приложение оптимизировано для работы в Telegram. Откройте его через Telegram для полного функционала.",
-          content_html: "<p>Это приложение оптимизировано для работы в Telegram. Откройте его через Telegram для полного функционала.</p>",
-          link: "#",
-          publish_date: new Date().toISOString(),
-          category: "tech",
-          media: []
-        },
-        {
-          id: 3,
-          title: "💎 Криптовалютные новости",
-          content: "Следите за последними новостями в мире криптовалют и блокчейн технологий.",
-          content_html: "<p>Следите за последними новостями в мире криптовалют и блокчейн технологий.</p>",
-          link: "#",
-          publish_date: new Date().toISOString(),
-          category: "crypto",
-          media: []
-        }
-      ],
-      total: 3,
-      page: 1,
-      pages: 1
-    };
-
-    if (category && category !== 'all') {
-      fallbackData.data = fallbackData.data.filter(item => item.category === category);
-      fallbackData.total = fallbackData.data.length;
-    }
-
-    return fallbackData;
-  }
-
   try {
     const cacheKey = `news_${category || 'all'}_${page}_${limit}`;
     
