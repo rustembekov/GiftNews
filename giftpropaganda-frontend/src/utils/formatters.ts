@@ -1,6 +1,11 @@
 export const formatTimeAgo = (dateString: string): string => {
+  if (!dateString) return 'недавно';
+  
   const now = new Date();
   const date = new Date(dateString);
+  
+  if (isNaN(date.getTime())) return 'недавно';
+  
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   if (diffInSeconds < 60) return 'только что';
@@ -10,8 +15,13 @@ export const formatTimeAgo = (dateString: string): string => {
 };
 
 export const isNewNews = (dateString: string): boolean => {
+  if (!dateString) return false;
+  
   const now = new Date();
   const date = new Date(dateString);
+  
+  if (isNaN(date.getTime())) return false;
+  
   const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
   return diffInHours < 24;
 };

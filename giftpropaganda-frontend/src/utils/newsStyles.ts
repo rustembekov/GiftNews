@@ -8,7 +8,7 @@ export interface NewsStyles {
 }
 
 export const getNewsStyles = (news: NewsItem): NewsStyles => {
-  // Определяем фон
+
   let background = 'var(--tg-theme-secondary-bg-color, #1a1a1a)';
   
   if (news.background_image) {
@@ -18,7 +18,7 @@ export const getNewsStyles = (news: NewsItem): NewsStyles => {
   } else if (news.background_color) {
     background = news.background_color;
   } else {
-    // Градиенты по категориям по умолчанию
+  
     const categoryGradients: Record<string, string> = {
       'gifts': 'linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%)',
       'crypto': 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)',
@@ -30,13 +30,13 @@ export const getNewsStyles = (news: NewsItem): NewsStyles => {
     background = categoryGradients[news.category] || categoryGradients.default;
   }
 
-  // Определяем иконку - всегда показываем иконку
+
   let icon = '📰';
   
   if (news.icon && news.icon.trim() !== '') {
     icon = news.icon;
   } else {
-    // Иконки по категориям по умолчанию
+  
     const categoryIcons: Record<string, string> = {
       'gifts': '🎁',
       'crypto': '₿',
@@ -48,11 +48,11 @@ export const getNewsStyles = (news: NewsItem): NewsStyles => {
     icon = categoryIcons[news.category] || categoryIcons.default;
   }
 
-  // Определяем цвета текста для лучшей читаемости
+
   let textColor = '#ffffff';
   let subtitleColor = '#ffffff';
   
-  // Если есть градиент или цветной фон, используем белый текст с тенью
+
   if (news.gradient_start || news.background_color || news.background_image) {
     textColor = '#ffffff';
     subtitleColor = '#ffffff';

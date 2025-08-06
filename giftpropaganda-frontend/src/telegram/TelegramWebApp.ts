@@ -3,22 +3,21 @@ class TelegramWebApp {
   private webApp: any = null;
 
   init() {
-    // Проверяем, что мы внутри Telegram
+  
     if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
       this.webApp = window.Telegram.WebApp;
       
-      // Инициализация Mini App
+
       this.webApp.ready();
       this.webApp.expand();
 
-      // Настройка темы для Mini App
       this.webApp.setHeaderColor('#1a1a1a');
       this.webApp.setBackgroundColor('#1a1a1a');
 
-      // MainButton отключен для Mini App
+
       this.webApp.MainButton.hide();
 
-      // Настройка BackButton
+
       this.webApp.BackButton.show();
       this.webApp.BackButton.onClick(() => {
         this.webApp.close();
@@ -167,7 +166,7 @@ class TelegramWebApp {
     }
   }
 
-  // Методы для работы с Mini App
+
   isMiniApp(): boolean {
     return this.webApp !== null;
   }
@@ -193,7 +192,7 @@ class TelegramWebApp {
     return 'dark';
   }
 
-  // Методы для работы с данными
+
   sendData(data: string) {
     if (this.webApp && this.webApp.sendData) {
       this.webApp.sendData(data);
@@ -207,7 +206,7 @@ class TelegramWebApp {
   }
 }
 
-// Создаем единственный экземпляр
+
 const telegramWebApp = new TelegramWebApp();
 
 export default telegramWebApp;

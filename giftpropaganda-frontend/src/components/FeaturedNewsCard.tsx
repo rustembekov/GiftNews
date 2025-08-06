@@ -178,7 +178,7 @@ const FeaturedNewsCard: React.FC<FeaturedNewsCardProps> = ({ news, onClick }) =>
 
   return (
     <FeaturedCard
-      $isNew={isNewNews(news.publish_date)}
+      $isNew={isNewNews(news.date || news.publish_date || '')}
       $background={styles.background}
       $textColor={styles.textColor}
       onClick={() => onClick(news)}
@@ -200,7 +200,7 @@ const FeaturedNewsCard: React.FC<FeaturedNewsCardProps> = ({ news, onClick }) =>
             <FeaturedBadge>
               {news.category.toUpperCase()}
             </FeaturedBadge>
-            <MetaItem>🕒 {formatTimeAgo(news.publish_date)}</MetaItem>
+            <MetaItem>🕒 {formatTimeAgo(news.date || news.publish_date || '')}</MetaItem>
             {news.reading_time && (
               <MetaItem>📖 {news.reading_time} мин</MetaItem>
             )}

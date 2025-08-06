@@ -1,16 +1,15 @@
 export interface NewsItem {
-  id: number;
+  id: string | number;
   title: string;
-  content: string;
+  content?: string;
+  text?: string;
   content_html?: string;
   link?: string;
-  publish_date: string;
+  publish_date?: string;
+  date?: string;
   category: string;
-  source?: {
-    id: number;
-    name: string;
-  };
-  media?: MediaItem[];
+  source?: string;
+  channel?: string;
   reading_time?: number;
   views_count?: number;
   author?: string;
@@ -20,6 +19,7 @@ export interface NewsItem {
   icon?: string;
   gradient_start?: string;
   gradient_end?: string;
+  media?: MediaItem[];
 }
 
 export interface MediaItem {

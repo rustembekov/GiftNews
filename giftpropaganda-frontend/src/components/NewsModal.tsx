@@ -461,7 +461,7 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
         if (navigator.share) {
             navigator.share({
                 title: news.title,
-                text: news.content.substring(0, 200) + '...',
+                text: (news.content || news.text || '').substring(0, 200) + '...',
                 url: news.link
             });
         }
@@ -501,7 +501,7 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
 
                         <ArticleMeta>
                             {news.author && <MetaItem>👤 {news.author}</MetaItem>}
-                            <MetaItem>🕒 {formatTimeAgo(news.publish_date)}</MetaItem>
+                            <MetaItem>🕒 {formatTimeAgo(news.date || news.publish_date || '')}</MetaItem>
                             {news.reading_time && (
                                 <MetaItem>📖 {news.reading_time} мин чтения</MetaItem>
                             )}
@@ -565,10 +565,10 @@ const NewsModal: React.FC<NewsModalProps> = ({news, isOpen, onClose}) => {
                         </ImportantNotice>
                     </DescriptionSection>
 
-                    {news.source?.name && (
+                    {news.source && (
                         <SourceInfo>
                             Источник:{" "}
-                            {news.source?.name}
+                            {typeof news.source === 'string' ? news.source : (news.source as any)?.name || news.source}
                         </SourceInfo>
                     )}
 

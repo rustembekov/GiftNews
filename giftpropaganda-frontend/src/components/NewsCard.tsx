@@ -209,7 +209,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
 
   return (
     <NewsCardContainer
-      $isNew={isNewNews(news.publish_date)}
+      $isNew={isNewNews(news.date || news.publish_date || '')}
       $background={styles.background}
       $textColor={styles.textColor}
       onClick={() => onClick(news)}
@@ -238,7 +238,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
           
           <NewsTextContent>
             <NewsTitle $textColor={styles.textColor}>{news.title}</NewsTitle>
-            <NewsPreview $subtitleColor={styles.subtitleColor}>{news.content}</NewsPreview>
+            <NewsPreview $subtitleColor={styles.subtitleColor}>{news.text || news.content}</NewsPreview>
           </NewsTextContent>
         </NewsHeader>
 
@@ -247,7 +247,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news, onClick }) => {
             <CategoryBadge $category={news.category}>
               {news.category.toUpperCase()}
             </CategoryBadge>
-            <MetaItem>🕒 {formatTimeAgo(news.publish_date)}</MetaItem>
+            <MetaItem>🕒 {formatTimeAgo(news.date || news.publish_date || '')}</MetaItem>
             {news.reading_time && (
               <MetaItem>📖 {news.reading_time} мин</MetaItem>
             )}

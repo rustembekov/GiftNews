@@ -1,28 +1,28 @@
 import axios from 'axios';
 import { NewsItem } from '../types';
 
-// Конфигурация API
+
 const API_CONFIG = {
   LOCAL: 'http://localhost:8000/api/news/',
-  LOCAL_PROD: 'http://localhost:8001/api/news/',
+  LOCAL_PROD: 'http://localhost:3001/api/news/',
   PROD: 'https://t-minigames.onrender.com/api/news/',
-  TIMEOUT: 10000,
-  RETRY_ATTEMPTS: 3,
-  RETRY_DELAY: 1000
+  TIMEOUT: 5000,
+  RETRY_ATTEMPTS: 2,
+  RETRY_DELAY: 500
 };
 
-// Состояние API
+
 let currentAPI = API_CONFIG.PROD;
 let apiHealth = {
   local: false,
   prod: false
 };
 
-// Кэш для хранения данных
+
 const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 минут
 
-// Функция для получения данных из кэша
+
 const getFromCache = (key: string) => {
   const cached = cache.get(key);
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
@@ -31,31 +31,31 @@ const getFromCache = (key: string) => {
   return null;
 };
 
-// Функция для сохранения данных в кэш
+
 const setCache = (key: string, data: any) => {
   cache.set(key, { data, timestamp: Date.now() });
 };
 
-// Функция для задержки
+
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Функция для проверки здоровья API
+
 const checkAPIHealth = async (url: string): Promise<boolean> => {
   try {
     const response = await axios.get(url + '?limit=1', {
-      timeout: 3000,
+      timeout: 2000,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     });
     return response.status === 200;
-  } catch {
+  } catch (error) {
     return false;
   }
 };
 
-// Функция для инициализации API
+
 const initializeAPI = async () => {
   if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
     try {
@@ -65,13 +65,18 @@ const initializeAPI = async () => {
       if (localHealth) {
         currentAPI = API_CONFIG.LOCAL;
       } else {
-        const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
-        apiHealth.prod = prodHealth;
-
-        if (prodHealth) {
-          currentAPI = API_CONFIG.PROD;
+        const localProdHealth = await checkAPIHealth(API_CONFIG.LOCAL_PROD);
+        if (localProdHealth) {
+          currentAPI = API_CONFIG.LOCAL_PROD;
         } else {
-          currentAPI = API_CONFIG.LOCAL;
+          const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
+          apiHealth.prod = prodHealth;
+
+          if (prodHealth) {
+            currentAPI = API_CONFIG.PROD;
+          } else {
+            currentAPI = API_CONFIG.LOCAL;
+          }
         }
       }
     } catch (error: any) {
@@ -84,7 +89,7 @@ const initializeAPI = async () => {
   }
 };
 
-// Функция для выполнения запроса с retry
+
 const executeWithRetry = async <T>(
   requestFn: () => Promise<T>,
   retries: number = API_CONFIG.RETRY_ATTEMPTS

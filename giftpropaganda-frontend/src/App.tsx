@@ -111,7 +111,7 @@ const App: React.FC = () => {
     TelegramWebApp.init();
     TelegramWebApp.expand();
     
-    // Логируем информацию о Mini App
+  
     console.log('=== TELEGRAM MINI APP INFO ===');
     console.log('Доступен:', TelegramWebApp.isAvailable());
     console.log('Платформа:', TelegramWebApp.getPlatform());
@@ -125,7 +125,7 @@ const App: React.FC = () => {
     setSelectedNews(newsItem);
     TelegramWebApp.triggerHapticFeedback('impact');
     
-    // Логируем API запрос для получения данных новости
+  
     console.log('=== API ЗАПРОС ДЛЯ НОВОСТИ ===');
     console.log('ID новости:', newsItem.id);
     console.log('Заголовок:', newsItem.title);
@@ -133,7 +133,7 @@ const App: React.FC = () => {
     console.log('Дата публикации:', newsItem.publish_date);
     console.log('Ссылка:', newsItem.link);
     
-    // Показываем, какой API запрос был выполнен
+  
     console.log('API запрос для получения этой новости:');
     console.log('URL:', `/api/news/${newsItem.id}`);
     console.log('Метод: GET');
@@ -168,10 +168,10 @@ const App: React.FC = () => {
 
   const filteredNews = news.filter(item =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.content.toLowerCase().includes(searchQuery.toLowerCase())
+    (item.content?.toLowerCase().includes(searchQuery.toLowerCase()) || false)
   );
 
-  // Разделяем новости на featured (первые 2) и обычные
+
   const featuredNews = filteredNews.slice(0, 2);
   const regularNews = filteredNews.slice(2);
 

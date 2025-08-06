@@ -4,7 +4,7 @@ import { fetchNews } from '../api/news';
 
 export const useNews = (category: string = 'all') => {
   const [news, setNews] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState(false); // Изменено на false для lazy loading
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -13,11 +13,17 @@ export const useNews = (category: string = 'all') => {
 
   const getNews = useCallback(async (isLoadMore: boolean = false) => {
     try {
-      const response = await fetchNews(
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 8000)
+      );
+      
+      const fetchPromise = fetchNews(
         category === 'all' ? undefined : category, 
         page, 
         20
       );
+      
+      const response = await Promise.race([fetchPromise, timeoutPromise]) as any;
 
       if (response && response.data) {
         if (isLoadMore) {
@@ -27,18 +33,6 @@ export const useNews = (category: string = 'all') => {
         }
         setHasMore(response.data.length === 20);
       }
-      
-      // Раскомментируйте для тестовых данных:
-      // const testNews = generateTestNews();
-      // const filteredNews = category === 'all' 
-      //   ? testNews 
-      //   : testNews.filter(item => item.category === category);
-      // if (isLoadMore) {
-      //   setNews(prev => [...prev, ...filteredNews]);
-      // } else {
-      //   setNews(filteredNews);
-      // }
-      // setHasMore(false);
     } catch (error) {
       console.error('Ошибка загрузки новостей:', error);
       setError('Не удалось загрузить новости');
@@ -65,12 +59,7 @@ export const useNews = (category: string = 'all') => {
         setNews(prev => [...prev, ...response.data]);
         setHasMore(response.data.length === 20 && (response.total || 0) > nextPage * 20);
         
-        // const moreTestNews = generateTestNews().map(item => ({
-        //   ...item,
-        //   id: item.id + 1000
-        // }));
-        // setNews(prev => [...prev, ...moreTestNews]);
-        // setHasMore(false);
+
       } catch (err) {
         console.error('Ошибка при загрузке дополнительных новостей:', err);
         setPage(prev => prev - 1);

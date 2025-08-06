@@ -1,4 +1,4 @@
-// Типы для Telegram WebApp API
+
 declare global {
   interface Window {
     Telegram?: {
@@ -12,7 +12,7 @@ interface TelegramWebApp {
   expand(): void;
   close(): void;
   
-  // Тема и цвета
+  
   setHeaderColor(color: string): void;
   setBackgroundColor(color: string): void;
   themeParams: {
@@ -24,7 +24,7 @@ interface TelegramWebApp {
     button_text_color?: string;
   };
   
-  // Пользователь
+  
   initDataUnsafe: {
     user?: {
       id: number;
@@ -42,15 +42,14 @@ interface TelegramWebApp {
     };
   };
   
-  // Данные
   initData: string;
   
-  // Платформа
+
   platform: string;
   version: string;
   colorScheme: 'light' | 'dark';
   
-  // Кнопки
+
   MainButton: {
     text: string;
     color: string;
@@ -75,14 +74,14 @@ interface TelegramWebApp {
     hide(): void;
   };
   
-  // Haptic Feedback
+
   HapticFeedback: {
     impactOccurred(style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft'): void;
     notificationOccurred(type: 'error' | 'success' | 'warning'): void;
     selectionChanged(): void;
   };
   
-  // Попапы
+
   showPopup(params: {
     title: string;
     message: string;
@@ -96,11 +95,11 @@ interface TelegramWebApp {
   showAlert(message: string): Promise<void>;
   showConfirm(message: string, callback?: (confirmed: boolean) => void): Promise<boolean>;
   
-  // Ссылки
+
   openLink(url: string): void;
   openTelegramLink(url: string): void;
   
-  // Данные
+
   sendData(data: string): void;
   switchInlineQuery(query: string, choose_chat_types?: string[]): void;
 }
