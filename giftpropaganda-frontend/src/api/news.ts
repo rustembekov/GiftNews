@@ -6,9 +6,9 @@ const API_CONFIG = {
   LOCAL: 'http://localhost:8000/api/news/',
   LOCAL_PROD: 'http://localhost:3001/api/news/',
   PROD: 'https://t-minigames.onrender.com/api/news/',
-  TIMEOUT: 5000,
-  RETRY_ATTEMPTS: 2,
-  RETRY_DELAY: 500
+  TIMEOUT: 3000,
+  RETRY_ATTEMPTS: 1,
+  RETRY_DELAY: 300
 };
 
 
@@ -43,7 +43,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const checkAPIHealth = async (url: string): Promise<boolean> => {
   try {
     const response = await axios.get(url + '?limit=1', {
-      timeout: 2000,
+      timeout: 1500,
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -83,9 +83,17 @@ const initializeAPI = async () => {
       currentAPI = API_CONFIG.LOCAL;
     }
   } else {
-    const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
-    apiHealth.prod = prodHealth;
-    currentAPI = API_CONFIG.PROD;
+    try {
+      const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
+      apiHealth.prod = prodHealth;
+      if (prodHealth) {
+        currentAPI = API_CONFIG.PROD;
+      } else {
+        currentAPI = API_CONFIG.PROD;
+      }
+    } catch (error: any) {
+      currentAPI = API_CONFIG.PROD;
+    }
   }
 };
 
@@ -177,9 +185,19 @@ export const fetchNews = async (
           publish_date: new Date().toISOString(),
           category: "general",
           media: []
+        },
+        {
+          id: 2,
+          title: "🎁 Техническое обслуживание",
+          content: "Система находится на техническом обслуживании. Скоро вернемся!",
+          content_html: "<p>Система находится на техническом обслуживании. Скоро вернемся!</p>",
+          link: "#",
+          publish_date: new Date().toISOString(),
+          category: "gifts",
+          media: []
         }
       ],
-      total: 1,
+      total: 2,
       page: 1,
       pages: 1
     };
