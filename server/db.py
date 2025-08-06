@@ -7,17 +7,26 @@ from datetime import datetime
 import os
 
 # Получаем URL базы данных из переменных окружения
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://news_db_bnnu_user:QkbkVviv0rOOKW2LIXh2tkelyDICRLXv@dpg-d22i993e5dus739mr8n0-a.oregon-postgres.render.com/news_db_bnnu")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./giftpropaganda.db")
 
-# Создаем движок базы данных с SSL
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"sslmode": "require"},  # ← ключевая строка
-    echo=False,
-    pool_pre_ping=True,
-    pool_recycle=300,
-    pool_reset_on_return='commit'
-)
+# Создаем движок базы данных
+if DATABASE_URL.startswith("sqlite"):
+    # Для SQLite не нужны SSL параметры
+    engine = create_engine(
+        DATABASE_URL,
+        echo=False,
+        connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
+    )
+else:
+    # Для PostgreSQL используем SSL
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"sslmode": "require"},
+        echo=False,
+        pool_pre_ping=True,
+        pool_recycle=300,
+        pool_reset_on_return='commit'
+    )
 
 # Сессии
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -88,14 +97,21 @@ except Exception as e:
 def recreate_engine():
     """Пересоздает движок базы данных с обновленными метаданными"""
     global engine, SessionLocal
-    engine = create_engine(
-        DATABASE_URL,
-        connect_args={"sslmode": "require"},
-        echo=False,
-        pool_pre_ping=True,
-        pool_recycle=300,
-        pool_reset_on_return='commit'
-    )
+    if DATABASE_URL.startswith("sqlite"):
+        engine = create_engine(
+            DATABASE_URL,
+            echo=False,
+            connect_args={"check_same_thread": False}
+        )
+    else:
+        engine = create_engine(
+            DATABASE_URL,
+            connect_args={"sslmode": "require"},
+            echo=False,
+            pool_pre_ping=True,
+            pool_recycle=300,
+            pool_reset_on_return='commit'
+        )
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     refresh_metadata()
     return engine

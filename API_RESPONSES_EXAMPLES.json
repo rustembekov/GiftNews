@@ -1,0 +1,328 @@
+{
+  "api_endpoints": {
+    "get_news": {
+      "method": "GET",
+      "url": "/news/",
+      "parameters": {
+        "category": "string (optional)",
+        "limit": "integer (default: 50, max: 100)",
+        "offset": "integer (default: 0)"
+      },
+      "response_example": {
+        "data": [
+          {
+            "id": 1,
+            "title": "🔼Торговый объем растёт!❤️Portals - 380 456❤️🥈Tonnel - 358 995❤️💸MRKT - 138 946❤️🏴‍☠️Fragment - 2 293",
+            "content": "🔼Торговый объем растёт!❤️Portals - 380 456❤️🥈Tonnel - 358 995❤️💸MRKT - 138 946❤️🏴‍☠️Fragment - 2 293❤️🧝OTC ELF - 1 376❤️🎁Торговый объем увеличивается благодаря активным торгам новыми подарками от Снуп Дога!🙋Прирост новых пользователей так же вырос - 3 572 человека за сутки!",
+            "content_html": "<p>🔼Торговый объем растёт!❤️Portals - 380 456❤️🥈Tonnel - 358 995❤️💸MRKT - 138 946❤️🏴‍☠️Fragment - 2 293❤️🧝OTC ELF - 1 376❤️🎁Торговый объем увеличивается благодаря активным торгам новыми подарками от Снуп Дога!🙋Прирост новых пользователей так же вырос - 3 572 человека за сутки!</p>",
+            "link": "https://t.me/gift_newstg",
+            "publish_date": "2025-08-06T06:14:18.910926",
+            "category": "gifts",
+            "media": [
+              {
+                "type": "photo",
+                "url": "https://example.com/image.jpg",
+                "thumbnail": "https://example.com/thumb.jpg",
+                "width": 800,
+                "height": 600
+              }
+            ],
+            "reading_time": 2,
+            "views_count": 150,
+            "author": "Gift News",
+            "source_name": "Gift News TG",
+            "source_url": "https://t.me/gift_newstg",
+            "source": {
+              "id": 1,
+              "name": "Gift News TG",
+              "url": "https://t.me/gift_newstg",
+              "source_type": "telegram",
+              "category": "gifts",
+              "is_active": true
+            }
+          },
+          {
+            "id": 2,
+            "title": "💎Подарки меняются на эмодзи!✉️Если скопировать ссылку любого telegram подарка и вставить в поиск браузера - вместо подарка будет отображаться эмодзи из пака",
+            "content": "💎Подарки меняются на эмодзи!✉️Если скопировать ссылку любого telegram подарка и вставить в поиск браузера - вместо подарка будет отображаться эмодзи из пака - News Emoji🔁У разных подарков модельки меняются на разные эмодзи!",
+            "content_html": "<p>💎Подарки меняются на эмодзи!✉️Если скопировать ссылку любого telegram подарка и вставить в поиск браузера - вместо подарка будет отображаться эмодзи из пака - News Emoji🔁У разных подарков модельки меняются на разные эмодзи!</p>",
+            "link": "https://t.me/gift_newstg",
+            "publish_date": "2025-08-06T06:14:18.911039",
+            "category": "gifts",
+            "media": [],
+            "reading_time": 1,
+            "views_count": 89,
+            "author": "Gift News",
+            "source_name": "Gift News TG",
+            "source_url": "https://t.me/gift_newstg",
+            "source": {
+              "id": 1,
+              "name": "Gift News TG",
+              "url": "https://t.me/gift_newstg",
+              "source_type": "telegram",
+              "category": "gifts",
+              "is_active": true
+            }
+          },
+          {
+            "id": 3,
+            "title": "🎁Plush Pepe = 💸BTC📊Главный кит подарков заявил,что после пампа 🎁Plush Pepe начнут расти все остальные подарки",
+            "content": "🎁Plush Pepe = 💸BTC📊Главный кит подарков заявил,что после пампа 🎁Plush Pepe начнут расти все остальные подарки!🔼При росте BTC растут все остальные криптовалюты,а при росте Plush Pepe - растут все остальные подарки!",
+            "content_html": "<p>🎁Plush Pepe = 💸BTC📊Главный кит подарков заявил,что после пампа 🎁Plush Pepe начнут расти все остальные подарки!🔼При росте BTC растут все остальные криптовалюты,а при росте Plush Pepe - растут все остальные подарки!</p>",
+            "link": "https://t.me/gift_newstg",
+            "publish_date": "2025-08-06T06:14:18.911122",
+            "category": "gifts",
+            "media": [],
+            "reading_time": 1,
+            "views_count": 67,
+            "author": "Gift News",
+            "source_name": "Gift News TG",
+            "source_url": "https://t.me/gift_newstg",
+            "source": {
+              "id": 1,
+              "name": "Gift News TG",
+              "url": "https://t.me/gift_newstg",
+              "source_type": "telegram",
+              "category": "gifts",
+              "is_active": true
+            }
+          },
+          {
+            "id": 4,
+            "title": "👮‍♀️Скам на $40 000 в подарках!🎁Украденные подарки:🎁Pepe Emerald🎁Money Bag X2❤️Gift Holder🎁Cupid Clock🎁Dr. Strange🎁Little Pepe🐸Happy Pepe",
+            "content": "👮‍♀️Скам на $40 000 в подарках!🎁Украденные подарки:🎁Pepe Emerald🎁Money Bag X2❤️Gift Holder🎁Cupid Clock🎁Dr. Strange🎁Little Pepe🐸Happy Pepe⚠️И вот как это произошло: 2 августа в 19:08 жертве написал Евгений Исаев @Isaev123456. В сообщении был скрин с его личными устаревшими данными и подпись к скрину:...",
+            "content_html": "<p>👮‍♀️Скам на $40 000 в подарках!🎁Украденные подарки:🎁Pepe Emerald🎁Money Bag X2❤️Gift Holder🎁Cupid Clock🎁Dr. Strange🎁Little Pepe🐸Happy Pepe⚠️И вот как это произошло: 2 августа в 19:08 жертве написал Евгений Исаев @Isaev123456. В сообщении был скрин с его личными устаревшими данными и подпись к скрину:...</p>",
+            "link": "https://t.me/gift_newstg",
+            "publish_date": "2025-08-06T06:14:18.911304",
+            "category": "gifts",
+            "media": [],
+            "reading_time": 3,
+            "views_count": 234,
+            "author": "Gift News",
+            "source_name": "Gift News TG",
+            "source_url": "https://t.me/gift_newstg",
+            "source": {
+              "id": 1,
+              "name": "Gift News TG",
+              "url": "https://t.me/gift_newstg",
+              "source_type": "telegram",
+              "category": "gifts",
+              "is_active": true
+            }
+          },
+          {
+            "id": 5,
+            "title": "📈 Ежедневная статистка Статистика за 24 часа, самый сильный рост показали — 🎁 Santa Hat 1.5 TON(6%)🔼",
+            "content": "📈 Ежедневная статистка Статистика за 24 часа, самый сильный рост показали — 🎁 Santa Hat 1.5 TON(6%)🔼🎁 Snow Mitt.  2.5 TON (5%) 🔼🌸 Sakura Flow.  3.4 TON (5%) 🔼🎁 Signet Ring 22 TON (4%) 🔼Подарки которые дали отрицательный рост — 🎁 Candy Cane 1 TON (-10%) 🔽🎩 Witch Hat 1.9 TON (-10%) 🔽🎁 Heroic Helm. 150...",
+            "content_html": "<p>📈 Ежедневная статистка Статистика за 24 часа, самый сильный рост показали — 🎁 Santa Hat 1.5 TON(6%)🔼🎁 Snow Mitt.  2.5 TON (5%) 🔼🌸 Sakura Flow.  3.4 TON (5%) 🔼🎁 Signet Ring 22 TON (4%) 🔼Подарки которые дали отрицательный рост — 🎁 Candy Cane 1 TON (-10%) 🔽🎩 Witch Hat 1.9 TON (-10%) 🔽🎁 Heroic Helm. 150...</p>",
+            "link": "https://t.me/giftsutya",
+            "publish_date": "2025-08-06T06:14:18.799072",
+            "category": "gifts",
+            "media": [],
+            "reading_time": 2,
+            "views_count": 156,
+            "author": "Gift Sutya",
+            "source_name": "Gift Sutya",
+            "source_url": "https://t.me/giftsutya",
+            "source": {
+              "id": 2,
+              "name": "Gift Sutya",
+              "url": "https://t.me/giftsutya",
+              "source_type": "telegram",
+              "category": "gifts",
+              "is_active": true
+            }
+          }
+        ],
+        "total": 150,
+        "page": 1,
+        "pages": 15
+      }
+    },
+    "get_news_item": {
+      "method": "GET",
+      "url": "/news/{news_id}",
+      "parameters": {
+        "news_id": "integer (path parameter)"
+      },
+      "response_example": {
+        "id": 1,
+        "title": "🔼Торговый объем растёт!❤️Portals - 380 456❤️🥈Tonnel - 358 995❤️💸MRKT - 138 946❤️🏴‍☠️Fragment - 2 293",
+        "content": "🔼Торговый объем растёт!❤️Portals - 380 456❤️🥈Tonnel - 358 995❤️💸MRKT - 138 946❤️🏴‍☠️Fragment - 2 293❤️🧝OTC ELF - 1 376❤️🎁Торговый объем увеличивается благодаря активным торгам новыми подарками от Снуп Дога!🙋Прирост новых пользователей так же вырос - 3 572 человека за сутки!",
+        "content_html": "<p>🔼Торговый объем растёт!❤️Portals - 380 456❤️🥈Tonnel - 358 995❤️💸MRKT - 138 946❤️🏴‍☠️Fragment - 2 293❤️🧝OTC ELF - 1 376❤️🎁Торговый объем увеличивается благодаря активным торгам новыми подарками от Снуп Дога!🙋Прирост новых пользователей так же вырос - 3 572 человека за сутки!</p>",
+        "link": "https://t.me/gift_newstg",
+        "publish_date": "2025-08-06T06:14:18.910926",
+        "category": "gifts",
+        "media": [
+          {
+            "type": "photo",
+            "url": "https://example.com/image.jpg",
+            "thumbnail": "https://example.com/thumb.jpg",
+            "width": 800,
+            "height": 600
+          },
+          {
+            "type": "video",
+            "url": "https://example.com/video.mp4",
+            "thumbnail": "https://example.com/video_thumb.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        ],
+        "reading_time": 2,
+        "views_count": 151,
+        "author": "Gift News",
+        "source_name": "Gift News TG",
+        "source_url": "https://t.me/gift_newstg",
+        "source": {
+          "id": 1,
+          "name": "Gift News TG",
+          "url": "https://t.me/gift_newstg",
+          "source_type": "telegram",
+          "category": "gifts",
+          "is_active": true
+        }
+      }
+    },
+    "get_categories": {
+      "method": "GET",
+      "url": "/categories/",
+      "parameters": {},
+      "response_example": {
+        "categories": [
+          "gifts",
+          "crypto",
+          "nft",
+          "general",
+          "trading",
+          "defi"
+        ]
+      }
+    },
+    "get_stats": {
+      "method": "GET",
+      "url": "/stats/",
+      "parameters": {},
+      "response_example": {
+        "total_news": 1250,
+        "categories": {
+          "gifts": 450,
+          "crypto": 300,
+          "nft": 200,
+          "general": 150,
+          "trading": 100,
+          "defi": 50
+        },
+        "last_updated": "2025-08-06T10:30:00.000000"
+      }
+    },
+    "telegram_webhook": {
+      "method": "POST",
+      "url": "/webhook",
+      "parameters": {
+        "update": "TelegramUpdate object"
+      },
+      "request_example": {
+        "update_id": 123456789,
+        "message": {
+          "message_id": 123,
+          "from": {
+            "id": 987654321,
+            "first_name": "User",
+            "username": "username"
+          },
+          "chat": {
+            "id": 987654321,
+            "type": "private"
+          },
+          "date": 1640995200,
+          "text": "/start"
+        }
+      },
+      "response_example": {
+        "status": "ok"
+      }
+    },
+    "get_bot_info": {
+      "method": "GET",
+      "url": "/bot-info",
+      "parameters": {},
+      "response_example": {
+        "status": "ok",
+        "bot_info": {
+          "id": 123456789,
+          "is_bot": true,
+          "first_name": "Gift Propaganda News Bot",
+          "username": "gift_propaganda_bot",
+          "can_join_groups": true,
+          "can_read_all_group_messages": false,
+          "supports_inline_queries": false
+        },
+        "webhook_url": "gift_propaganda_bot bot"
+      }
+    },
+    "send_news": {
+      "method": "POST",
+      "url": "/send-news",
+      "parameters": {
+        "chat_id": "integer",
+        "news_id": "integer (optional)"
+      },
+      "response_example": {
+        "status": "ok",
+        "chat_id": 987654321,
+        "news_id": 1
+      }
+    }
+  },
+  "data_structures": {
+    "NewsItemResponse": {
+      "id": "integer - Уникальный идентификатор новости",
+      "title": "string - Заголовок новости",
+      "content": "string - Текстовое содержимое",
+      "content_html": "string - HTML содержимое",
+      "link": "string - Ссылка на оригинальную новость",
+      "publish_date": "string - Дата публикации (ISO формат)",
+      "category": "string - Категория новости",
+      "media": "array - Массив медиа файлов",
+      "reading_time": "integer - Время чтения в минутах",
+      "views_count": "integer - Количество просмотров",
+      "author": "string - Автор новости",
+      "source_name": "string - Название источника",
+      "source_url": "string - URL источника",
+      "source": "object - Полная информация об источнике"
+    },
+    "MediaItem": {
+      "type": "string - Тип медиа (photo, video, document)",
+      "url": "string - URL медиа файла",
+      "thumbnail": "string - URL превью",
+      "width": "integer - Ширина (для изображений/видео)",
+      "height": "integer - Высота (для изображений/видео)"
+    },
+    "NewsSourceResponse": {
+      "id": "integer - ID источника",
+      "name": "string - Название источника",
+      "url": "string - URL источника",
+      "source_type": "string - Тип источника (telegram, rss, etc.)",
+      "category": "string - Категория источника",
+      "is_active": "boolean - Активен ли источник"
+    }
+  },
+  "error_responses": {
+    "404": {
+      "detail": "Новость не найдена"
+    },
+    "500": {
+      "detail": "Ошибка при получении новостей: {error_message}"
+    }
+  },
+  "usage_examples": {
+    "get_gifts_news": "GET /news/?category=gifts&limit=5",
+    "get_paginated_news": "GET /news/?limit=20&offset=40",
+    "get_all_news": "GET /news/?limit=100",
+    "get_nft_news": "GET /news/?category=nft&limit=10",
+    "get_single_news": "GET /news/1",
+    "get_categories": "GET /categories/",
+    "get_statistics": "GET /stats/"
+  }
+} 

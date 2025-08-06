@@ -15,7 +15,6 @@ export interface NewsItem {
   views_count?: number;
   author?: string;
   subtitle?: string;
-  // Новые поля для дизайна
   background_image?: string;
   background_color?: string;
   icon?: string;
