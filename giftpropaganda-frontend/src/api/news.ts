@@ -86,13 +86,9 @@ const initializeAPI = async () => {
     try {
       const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
       apiHealth.prod = prodHealth;
-      if (prodHealth) {
-        currentAPI = API_CONFIG.PROD;
-      } else {
-        currentAPI = 'fallback';
-      }
+      currentAPI = API_CONFIG.PROD;
     } catch (error: any) {
-      currentAPI = 'fallback';
+      currentAPI = API_CONFIG.PROD;
     }
   }
 };
@@ -154,8 +150,7 @@ export const fetchNews = async (
       return await axios.get<NewsResponse>(url, {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache'
+          'Accept': 'application/json'
         },
         timeout: API_CONFIG.TIMEOUT
       });
@@ -168,45 +163,7 @@ export const fetchNews = async (
     return response.data;
   } catch (error: any) {
     console.error('API Error:', error.message, 'URL:', currentAPI);
-    const fallbackData: NewsResponse = {
-      data: [
-        {
-          id: 1,
-          title: "🎁 Добро пожаловать в GiftNews!",
-          content: "Здесь вы найдете самые свежие новости о подарках, криптовалютах и технологиях. Приложение работает в режиме демонстрации.",
-          content_html: "<p>Здесь вы найдете самые свежие новости о подарках, криптовалютах и технологиях. Приложение работает в режиме демонстрации.</p>",
-          link: "#",
-          publish_date: new Date().toISOString(),
-          category: "gifts",
-          media: []
-        },
-        {
-          id: 2,
-          title: "📱 Telegram Mini App",
-          content: "Это приложение оптимизировано для работы в Telegram. Откройте его через Telegram для полного функционала.",
-          content_html: "<p>Это приложение оптимизировано для работы в Telegram. Откройте его через Telegram для полного функционала.</p>",
-          link: "#",
-          publish_date: new Date().toISOString(),
-          category: "tech",
-          media: []
-        },
-        {
-          id: 3,
-          title: "💎 Криптовалютные новости",
-          content: "Следите за последними новостями в мире криптовалют и блокчейн технологий.",
-          content_html: "<p>Следите за последними новостями в мире криптовалют и блокчейн технологий.</p>",
-          link: "#",
-          publish_date: new Date().toISOString(),
-          category: "crypto",
-          media: []
-        }
-      ],
-      total: 3,
-      page: 1,
-      pages: 1
-    };
-
-    return fallbackData;
+    throw error;
   }
 };
 
