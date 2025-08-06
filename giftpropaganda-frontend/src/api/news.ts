@@ -5,7 +5,7 @@ import { NewsItem } from '../types';
 const API_CONFIG = {
   LOCAL: 'http://localhost:8000/api/news/',
   LOCAL_PROD: 'http://localhost:3001/api/news/',
-  PROD: 'https://cors-anywhere.herokuapp.com/https://t-minigames.onrender.com/api/news/',
+  PROD: 'https://t-minigames.onrender.com/api/news/',
   TIMEOUT: 3000,
   RETRY_ATTEMPTS: 1,
   RETRY_DELAY: 300
@@ -46,11 +46,8 @@ const checkAPIHealth = async (url: string): Promise<boolean> => {
       timeout: 1500,
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Origin': 'https://rustembekov.github.io',
-        'Access-Control-Allow-Origin': '*'
-      },
-      withCredentials: false
+        'Accept': 'application/json'
+      }
     });
     return response.status === 200;
   } catch (error) {
@@ -86,17 +83,7 @@ const initializeAPI = async () => {
       currentAPI = API_CONFIG.LOCAL;
     }
   } else {
-    try {
-      const prodHealth = await checkAPIHealth(API_CONFIG.PROD);
-      apiHealth.prod = prodHealth;
-      if (prodHealth) {
-        currentAPI = API_CONFIG.PROD;
-      } else {
-        currentAPI = API_CONFIG.PROD;
-      }
-    } catch (error: any) {
-      currentAPI = API_CONFIG.PROD;
-    }
+    currentAPI = 'fallback';
   }
 };
 
@@ -136,6 +123,53 @@ export const fetchNews = async (
   limit: number = 20,
   useCache: boolean = true
 ): Promise<NewsResponse> => {
+  if (currentAPI === 'fallback') {
+    const fallbackData: NewsResponse = {
+      data: [
+        {
+          id: 1,
+          title: "🎁 Добро пожаловать в GiftNews!",
+          content: "Здесь вы найдете самые свежие новости о подарках, криптовалютах и технологиях. Приложение работает в режиме демонстрации.",
+          content_html: "<p>Здесь вы найдете самые свежие новости о подарках, криптовалютах и технологиях. Приложение работает в режиме демонстрации.</p>",
+          link: "#",
+          publish_date: new Date().toISOString(),
+          category: "gifts",
+          media: []
+        },
+        {
+          id: 2,
+          title: "📱 Telegram Mini App",
+          content: "Это приложение оптимизировано для работы в Telegram. Откройте его через Telegram для полного функционала.",
+          content_html: "<p>Это приложение оптимизировано для работы в Telegram. Откройте его через Telegram для полного функционала.</p>",
+          link: "#",
+          publish_date: new Date().toISOString(),
+          category: "tech",
+          media: []
+        },
+        {
+          id: 3,
+          title: "💎 Криптовалютные новости",
+          content: "Следите за последними новостями в мире криптовалют и блокчейн технологий.",
+          content_html: "<p>Следите за последними новостями в мире криптовалют и блокчейн технологий.</p>",
+          link: "#",
+          publish_date: new Date().toISOString(),
+          category: "crypto",
+          media: []
+        }
+      ],
+      total: 3,
+      page: 1,
+      pages: 1
+    };
+
+    if (category && category !== 'all') {
+      fallbackData.data = fallbackData.data.filter(item => item.category === category);
+      fallbackData.total = fallbackData.data.length;
+    }
+
+    return fallbackData;
+  }
+
   try {
     const cacheKey = `news_${category || 'all'}_${page}_${limit}`;
     
@@ -156,15 +190,11 @@ export const fetchNews = async (
     const response = await executeWithRetry(async () => {
       return await axios.get<NewsResponse>(url, {
         headers: {
-          'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Cache-Control': 'no-cache',
-          'Origin': 'https://rustembekov.github.io',
-          'Access-Control-Allow-Origin': '*'
+          'Cache-Control': 'no-cache'
         },
-        timeout: API_CONFIG.TIMEOUT,
-        withCredentials: false
+        timeout: API_CONFIG.TIMEOUT
       });
     });
 
