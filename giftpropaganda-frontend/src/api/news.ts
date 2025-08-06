@@ -5,7 +5,7 @@ import { NewsItem } from '../types';
 const API_CONFIG = {
   LOCAL: 'http://localhost:8000/api/news/',
   LOCAL_PROD: 'http://localhost:3001/api/news/',
-  PROD: 'https://t-minigames.onrender.com/api/news/',
+  PROD: 'https://cors-anywhere.herokuapp.com/https://t-minigames.onrender.com/api/news/',
   TIMEOUT: 3000,
   RETRY_ATTEMPTS: 1,
   RETRY_DELAY: 300
@@ -46,8 +46,11 @@ const checkAPIHealth = async (url: string): Promise<boolean> => {
       timeout: 1500,
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
+        'Accept': 'application/json',
+        'Origin': 'https://rustembekov.github.io',
+        'Access-Control-Allow-Origin': '*'
+      },
+      withCredentials: false
     });
     return response.status === 200;
   } catch (error) {
@@ -156,9 +159,12 @@ export const fetchNews = async (
           'ngrok-skip-browser-warning': 'true',
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          'Origin': 'https://rustembekov.github.io',
+          'Access-Control-Allow-Origin': '*'
         },
-        timeout: API_CONFIG.TIMEOUT
+        timeout: API_CONFIG.TIMEOUT,
+        withCredentials: false
       });
     });
 
